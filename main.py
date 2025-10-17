@@ -30,6 +30,6 @@ users = {
 def get_users(user_id:int,order_id:int):
     if user_id not in users:
         raise HTTPException(status_code =404, details ="product id not found")
-    return users[user_id]['orders'][order_id
+    return users[user_id]['orders'][order_id]
 
                                     ]
