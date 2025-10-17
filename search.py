@@ -32,3 +32,4 @@ def get_student_by_name(student_name: str):
     return [s for s in students if s["name"].lower() == student_name.lower()]
 
     
+
