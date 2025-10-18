@@ -1,0 +1,18 @@
+from sqlmodel import SQLModel,Field
+from typing import Optional
+
+#we need to install the multipart library in so we can validate the swagger foam 
+#pip install python-multipart
+
+class User(SQLModel, table = True):
+    id :Optional[int] = Field(default = None ,primary_key=True)
+    name :str
+    phone: int
+    email: str
+    file_path :str
+
+class Create_user(SQLModel):
+    name : str
+    phone : int
+    email :str
+
