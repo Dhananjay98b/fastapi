@@ -1,0 +1,105 @@
+from fastapi import FastAPI,Depends,HTTPException,Form,File,UploadFile
+from sqlmodel import SQLModel, create_engine,Session,select
+from contextlib import asynccontextmanager
+from typing import Annotated
+from model import User,Create_user
+import os,shutil
+
+DATABASE_URL = "sqlite:///./users.db"
+engine = create_engine(DATABASE_URL,echo =True)
+
+@asynccontextmanager
+async def lifespan(app:FastAPI)
+    SQLModel.metadata.create_all(engine)
+    yield
+
+app = FastAPI(lifespan=lifespan)
+
+def get_session():
+    with Session(engine) as session:
+        yield session
+
+SessionDep = Annotated[Session,Depends(get_session)]
+
+Uploads_Dir = "uploads"
+os.makedirs(Uploads_Dir,exist_ok=True)
+
+@app.post('/createusers')
+def usercreate(
+    session:SessionDep,
+    name:str = Form(...),
+    phone:int = Form(...),
+    email:str = Form(...),
+    file:UploadFile = File(...)
+
+    )
+
+    user =[name:'name',phone:'phone',emal:'email']
+    validate = Create_user.model_validate(user)
+
+    file_path = os.path.join(Uploads_Dir,file.filename)
+    with open(file_path,"wb") as f:
+        shutil.copyfileobj(file.file ,f)
+    
+    user =User(**validate.model_dump(),"{Uploads_Dir}{file_path=file.name}")
+    session.add(user)
+    session.commit()
+    session.refresh(user)
+
+
+
+
+
+
+
+
+
+# @app.post('/createuser')
+# def create_user(user:User, session:SessionDep):
+#     new_user = User.model_validate(user)
+#     session.add(new_user)
+#     session.commit()
+#     session.refresh(new_user)
+#     return new_user
+
+# @app.get('/users',responce_model =list[User])
+# def get_users(session:SessionDep):
+#     users = session.exec(select(User)).all()
+#     if not users:
+#         raise HTTPException(status ='404',message='user details are not found')
+#     return users
+
+# @app.get('/users/{users_id}')
+# def get_single_user(userid:int, responce_model = User):
+#     user = session.get(User,user_id)
+#     if not in user:
+#         raise HTTPException(status :'404',details:"user details are not found")
+#     return user
+
+# @app.put('/users/{users_id}')
+# def update_user(userid:int, update= create_user, responce_model = User):
+#     user = session.get(User,user_id)
+#     if not in user:
+#         raise HTTPException(status :'404',details:"user details are not found")
+#     user.name =update.name
+#     user.phone = update.phone
+#     user.email = update.email
+#     session.add(user)
+#     session.refresh(user)
+#     session.commit()
+
+# @app.delete('/users/{users_id}')
+# def delete_user(userid:int, update= create_user, responce_model = User):
+#     user = session.get(User,user_id)
+#     if not in user:
+#         raise HTTPException(status :'404',details:"user details are not found")
+#     user.name =update.name
+#     user.phone = update.phone
+#     user.email = update.email
+#     session.delete(user)
+#     session.refresh(user)
+#     session.commit()
+#     return {"message":"user succefully deleted"}
+
+
+
