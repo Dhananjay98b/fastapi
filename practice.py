@@ -1,12 +1,21 @@
-import request
+# import pandas as pd 
+# my_data = {
+#     "mydata":"Dhananjay",
+#     "surname":"Bhupathi",
+#     "topper":[10,20,30,40]
+# }
 
-def most_common_words_in_webpage(words,url):
-    responce = request.get(url)
-    return most_common_words_in_webpage(words,responce.text()
+# print(my_data)
+import pandas as pd
 
-def most_common_words(words,text):
-    """"
-        find the most common words in web page
-    """
-    word_frequency = {w :text(w) for w in words}
-    return sorted(words, key=word_frequency.get)[-1]
+mydataset = {
+  'cars': ["BMW", "Volvo", "Ford"],
+  'passings': [3, 7, 2],
+  "names":["dhananjay","swami","simha"],
+  "subject":["Python","sql","Ds"]
+
+}
+
+myvar = pd.DataFrame(mydataset)
+
+print(myvar)
